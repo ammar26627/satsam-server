@@ -1,0 +1,12 @@
+[Unit]
+Description=Gunicorn instance to serve Flask application
+After=network.target
+
+[Service]
+User=sac
+WorkingDirectory=/home/sac/sam-satellite-images/satsam-server
+ExecStart=/home/sac/.local/bin/gunicorm -w 1 -b 0.0.0.0:5001 application:app --daemon
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
