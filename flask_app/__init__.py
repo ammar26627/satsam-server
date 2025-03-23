@@ -1,6 +1,5 @@
-from flask import Flask, Blueprint
+from flask import Flask
 from flask_cors import CORS
-import os, sys, torch, threading
 from flask_app.routes import main_bp as bp
 from flask_app.queue_manager import QueueManager
 

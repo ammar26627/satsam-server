@@ -1,6 +1,6 @@
-import queue
-import threading, uuid, os, sys
-import torch
+import threading, uuid, os, sys, queue, torch
+from datetime import timedelta
+from timer_dict import TimerDict
 
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 ROOT_DIR = os.path.abspath(os.path.join(BASE_DIR, '..'))
@@ -12,7 +12,7 @@ from segment_anything import sam_model_registry, SamPredictor
 class QueueManager:
     def  __init__(self):
         self.request_queue = queue.Queue()
-        self.job_results = {}
+        self.job_results = TimerDict(timedelta(minutes=5))
         self.lock = threading.Lock()
         self.worker_running = False
         
@@ -32,7 +32,7 @@ class QueueManager:
         estimated_time = queue_size * 5000
 
         if not self.worker_running:
-            print('Thread Running')
+            print('Worker Running')
             self.worker_running = True
             worker_thread = threading.Thread(target=self.process_results, daemon=True)
             worker_thread.start()
@@ -58,7 +58,7 @@ class QueueManager:
                 self.job_results[job_id] = result
                 print(f'Embeddings Generated for ID {job_id}')
 
-            self.request_queue.task_done()  # Mark task as completed
+            self.request_queue.task_done()
 
         
         self.worker_running = False

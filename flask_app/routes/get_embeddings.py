@@ -1,13 +1,12 @@
 from flask import Blueprint, request, jsonify, current_app
 from flask_cors import cross_origin
-import json
 
 embeddings_bp = Blueprint('get_embeddings', __name__)
 
 @embeddings_bp.route('/get_embeddings', methods=['POST'])
 @cross_origin()
 def get_embeddings():
-    id = request.get_json().get("ID")
+    id = request.form.get('ID')
     queue_manager = current_app.config['QUEUE_MANAGER']
     if id in queue_manager.job_results:
         response = queue_manager.job_results[id]

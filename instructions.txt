@@ -5,7 +5,7 @@ After=network.target
 [Service]
 User=sac
 WorkingDirectory=/home/sac/sam-satellite-images/satsam-server
-ExecStart=/home/sac/.local/bin/gunicorm -w 1 -b 0.0.0.0:5001 application:app --daemon
+ExecStart=/home/sac/.local/bin/gunicorn -w 1 -b 0.0.0.0:5001 application:app
 Restart=always
 
 [Install]
